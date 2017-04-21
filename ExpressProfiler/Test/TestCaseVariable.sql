@@ -27,53 +27,76 @@ Properties => Settings.settings
 
 
 
-YukonLexer.cs in function public void FillRichEdit(System. Windows.Forms.RichTextBox rich, string value) 
-
-[...]
-
-System.Collections.Generic.List<TokenKind> lsTokenTypeHistory = 
-new System.Collections.Generic.List<TokenKind>();
-
-
-RTFBuilder sb = new RTFBuilder { BackColor = rich.BackColor };
-while (TokenId != TokenKind.tkNull)
+YukonLexer.cs: 
+public void FillRichEdit(System. Windows.Forms.RichTextBox rich, string value)
 {
-	if(TokenId != TokenKind.tkSpace)
-		lsTokenTypeHistory.Add(TokenId);
 
-	Color forecolor;
-	switch (TokenId)
-	{
+    rich.Text = "";
+    Line = value;
 
-[...]
 
-if (Token == Environment.NewLine || Token == "\r" || Token == "\n")
-{
-    sb.AppendLine();
-}
-else
-{
-    int cntHistory = lsTokenTypeHistory.Count;
+    System.Collections.Generic.List<TokenKind> lsTokenTypeHistory = 
+        new System.Collections.Generic.List<TokenKind>();
 
-    if (TokenKind.tkString == TokenId 
-        && cntHistory > 3
-        && lsTokenTypeHistory[cntHistory - 2] == TokenKind.tkSymbol
-        && lsTokenTypeHistory[cntHistory - 3] == TokenKind.tkVariable
-        && System.Text.RegularExpressions.Regex
-        .IsMatch(
-                Token
-            , @"^'\d\d\d\d-\d\d-\d\d\s\d\d\:\d\d\:\d\d(\.\d\d\d)?'$"
-            , System.Text.RegularExpressions.RegexOptions.Compiled
-        )
-    )
+
+    RTFBuilder sb = new RTFBuilder { BackColor = rich.BackColor };
+    while (TokenId != TokenKind.tkNull)
     {
-        // System.DateTime dt;
-        // if (System.DateTime.TryParseExact(Token, "yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AllowWhiteSpaces, out dt))
-        // sb.Append(dt.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff"));
-        sb.Append(Token.Replace(" ", "T"));
+        if(TokenId != TokenKind.tkSpace)
+            lsTokenTypeHistory.Add(TokenId);
+
+        Color forecolor;
+        switch (TokenId)
+        {
+            case TokenKind.tkKey: forecolor = Color.Blue;
+                break;
+            case TokenKind.tkFunction: forecolor = Color.Fuchsia; break;
+            case TokenKind.tkGreyKeyword: forecolor = Color.Gray; break;
+            case TokenKind.tkFuKeyword: forecolor = Color.Fuchsia; break;
+            case TokenKind.tkDatatype:
+                forecolor = Color.Blue; break;
+            case TokenKind.tkNumber: forecolor = Color.Red; break;
+            case TokenKind.tkString: forecolor = Color.Red; break;
+            case TokenKind.tkComment: forecolor = Color.DarkGreen;
+                break;
+            default: forecolor = Color.Black; break;
+        }
+        sb.ForeColor = forecolor;
+        if (Token == Environment.NewLine || Token == "\r" || Token == "\n")
+        {
+            sb.AppendLine();
+        }
+        else
+        {
+            int cntHistory = lsTokenTypeHistory.Count;
+
+            if (TokenKind.tkString == TokenId 
+                && cntHistory > 3
+                && lsTokenTypeHistory[cntHistory - 2] == TokenKind.tkSymbol
+                && lsTokenTypeHistory[cntHistory - 3] == TokenKind.tkVariable
+                && System.Text.RegularExpressions.Regex
+                .IsMatch(
+                        Token
+                    , @"^'\d\d\d\d-\d\d-\d\d\s\d\d\:\d\d\:\d\d(\.\d\d\d)?'$"
+                    , System.Text.RegularExpressions.RegexOptions.Compiled
+                )
+            )
+            {
+                // System.DateTime dt;
+                // if (System.DateTime.TryParseExact(Token, "yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AllowWhiteSpaces, out dt))
+                // sb.Append(dt.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff"));
+                sb.Append(Token.Replace(" ", "T"));
+            }
+            else
+                sb.Append(Token);
+        }
+        Next();
     }
-    else
-        sb.Append(Token);
+
+    lsTokenTypeHistory.Clear();
+    lsTokenTypeHistory = null;
+
+    rich.Rtf = sb.ToString();
 }
 
 */
