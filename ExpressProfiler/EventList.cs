@@ -36,26 +36,26 @@ namespace ExpressProfiler
 
         public long AvgCPU
         {
-            get { return Count == 0 ? 0 : CPU/Count; }
+            get { return Count == 0 ? 0 : CPU / Count; }
         }
         public long AvgReads
         {
-            get{ return Count == 0 ? 0 : Reads / Count;}
+            get { return Count == 0 ? 0 : Reads / Count; }
         }
         public long AvgWrites
         {
-            get { return Count == 0 ? 0 : Writes / Count;}
+            get { return Count == 0 ? 0 : Writes / Count; }
         }
         public long AvgDuration
         {
             get { return Count == 0 ? 0 : Duration / Count; }
         }
-            
+
 
         //needed for serialization
-// ReSharper disable UnusedMember.Global
+        // ReSharper disable UnusedMember.Global
         public CEvent() { }
-// ReSharper restore UnusedMember.Global
+        // ReSharper restore UnusedMember.Global
 
         public CEvent(long aDatabaseID, string aDatabaseName, long aObjectID, string aObjectName, string aTextData)
         {
@@ -66,7 +66,7 @@ namespace ExpressProfiler
             TextData = aTextData;
         }
 
-        public CEvent(long eventClass,long spid, long nestLevel, long aDatabaseID, string aDatabaseName, long aObjectID, string aObjectName, string aTextData, long duration, long reads, long writes,long cpu)
+        public CEvent(long eventClass, long spid, long nestLevel, long aDatabaseID, string aDatabaseName, long aObjectID, string aObjectName, string aTextData, long duration, long reads, long writes, long cpu)
         {
             EventClass = eventClass;
             DatabaseID = aDatabaseID;
@@ -90,31 +90,31 @@ namespace ExpressProfiler
 
     public class SimpleEventList
     {
-        public readonly SortedDictionary<string,CEvent> List;
+        public readonly SortedDictionary<string, CEvent> List;
 
-        public SimpleEventList() 
+        public SimpleEventList()
         {
-            List = new SortedDictionary<string, CEvent>(); 
+            List = new SortedDictionary<string, CEvent>();
         }
 
-        public void SaveToFile(string filename) 
+        public void SaveToFile(string filename)
         {
             CEvent[] a = new CEvent[List.Count];
             List.Values.CopyTo(a, 0);
             XmlSerializer x = new XmlSerializer(typeof(CEvent[]));
-            
+
             FileStream fs = new FileStream(filename, FileMode.Create);
             x.Serialize(fs, a);
             fs.Dispose();
 
         }
-        public void AddEvent(long eventClass, long nestLevel, long databaseID,string databaseName,long objectID,string objectName, string textData, long cpu, long reads, long writes, long duration,long count,long rowcounts)
-        { 
+        public void AddEvent(long eventClass, long nestLevel, long databaseID, string databaseName, long objectID, string objectName, string textData, long cpu, long reads, long writes, long duration, long count, long rowcounts)
+        {
             CEvent evt;
-            string key = String.Format("({0}).({1}).({2})",databaseID,objectID,textData);
-            if(!List.TryGetValue(key,out evt))
+            string key = String.Format("({0}).({1}).({2})", databaseID, objectID, textData);
+            if (!List.TryGetValue(key, out evt))
             {
-                evt = new CEvent(databaseID,databaseName,objectID,objectName,textData);
+                evt = new CEvent(databaseID, databaseName, objectID, objectName, textData);
                 List.Add(key, evt);
             }
             evt.NestLevel = nestLevel;
@@ -126,7 +126,7 @@ namespace ExpressProfiler
             evt.Duration += duration;
             evt.RowCounts += rowcounts;
 
-        }        
+        }
     }
 
     public class CEventList
@@ -152,11 +152,11 @@ namespace ExpressProfiler
                                  , e.ObjectName.Length == 0 ? 0 : e.ObjectID
                                  , e.ObjectName.Length == 0 ? "" : e.ObjectName
                                  , e.ObjectName.Length == 0 ?
-                                                                lex.StandardSql(e.TextData) : e.TextData, e.CPU, e.Reads, e.Writes, e.Duration, e.Count,e.RowCounts);
+                                                                lex.StandardSql(e.TextData) : e.TextData, e.CPU, e.Reads, e.Writes, e.Duration, e.Count, e.RowCounts);
                     }
                     else
                     {
-                        AddEvent(cnt, e.DatabaseID, e.DatabaseName, e.ObjectID, e.ObjectName, e.TextData, e.CPU, e.Reads, e.Writes, e.Duration, e.Count,e.RowCounts);
+                        AddEvent(cnt, e.DatabaseID, e.DatabaseName, e.ObjectID, e.ObjectName, e.TextData, e.CPU, e.Reads, e.Writes, e.Duration, e.Count, e.RowCounts);
                     }
                 }
             }
@@ -164,7 +164,7 @@ namespace ExpressProfiler
 
         }
 
-        public void AddEvent(int cnt, long databaseID, string databaseName, long objectID, string objectName, string textData, long cpu, long reads, long writes, long duration, long count,long rowcounts)
+        public void AddEvent(int cnt, long databaseID, string databaseName, long objectID, string objectName, string textData, long cpu, long reads, long writes, long duration, long count, long rowcounts)
         {
             CEvent[] evt;
             CEvent e;

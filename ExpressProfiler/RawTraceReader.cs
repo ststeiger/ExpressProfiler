@@ -46,7 +46,7 @@ namespace ExpressProfiler
         from	sys.trace_categories sc inner join sys.trace_events ev on sc.category_id = ev.category_id
         order by sc.category_id,ev.trace_event_id
             */
-// ReSharper disable RedundantExplicitArraySize
+        // ReSharper disable RedundantExplicitArraySize
         public static readonly string[] Names = new string[202]
 // ReSharper restore RedundantExplicitArraySize
                                                     {
@@ -252,7 +252,7 @@ namespace ExpressProfiler
                                                         ,"QN: Subscription"
                                                         ,"QN: Parameter table"
                                                         ,"QN: Template"
-                                               
+
                                                     }
                                         ;
         public static class Cursors
@@ -1008,7 +1008,7 @@ order by Type_Name,trace_column_id
                     return GetLong(idx).ToString(format);
                 case ProfilerColumnDataType.DateTime:
                     DateTime d = GetDateTime(idx);
-                    return 1==d.Year?"": d.ToString(format);
+                    return 1 == d.Year ? "" : d.ToString(format);
                 case ProfilerColumnDataType.Byte:
                     return GetByte(idx).ToString();
                 case ProfilerColumnDataType.Int:
@@ -1039,24 +1039,24 @@ order by Type_Name,trace_column_id
             return m_Events[idx] == null ? "" : (string)m_Events[idx];
         }
 
-        private  byte[] GetByte(int idx)
+        private byte[] GetByte(int idx)
         {
-            return ColumnIsSet(idx)?(byte[])m_Events[idx]:new byte[1];
+            return ColumnIsSet(idx) ? (byte[])m_Events[idx] : new byte[1];
         }
 
         private DateTime GetDateTime(int idx)
         {
-            return ColumnIsSet(idx) ? (DateTime) m_Events[idx] : new DateTime(0);
+            return ColumnIsSet(idx) ? (DateTime)m_Events[idx] : new DateTime(0);
         }
 
         private Guid GetGuid(int idx)
         {
-            return ColumnIsSet(idx) ? (Guid) m_Events[idx] : Guid.Empty;
+            return ColumnIsSet(idx) ? (Guid)m_Events[idx] : Guid.Empty;
         }
 
-// ReSharper disable MemberCanBePrivate.Global
+        // ReSharper disable MemberCanBePrivate.Global
         public bool ColumnIsSet(int columnId)
-// ReSharper restore MemberCanBePrivate.Global
+        // ReSharper restore MemberCanBePrivate.Global
         {
             return (m_ColumnMask & (1UL << columnId)) != 0;
         }
@@ -1189,7 +1189,7 @@ order by trace_column_id
         }
         public void Close()
         {
-            if(m_Reader!=null){m_Reader.Close();}
+            if (m_Reader != null) { m_Reader.Close(); }
             m_LastRead = false;
         }
 
@@ -1302,14 +1302,14 @@ order by trace_column_id
             //2 byte - sec
             //2 byte - msec
             m_Reader.GetBytes(2, 0, m_B16, 0, 16);
-            int year = m_B16[0]|m_B16[1]<<8;
+            int year = m_B16[0] | m_B16[1] << 8;
             int month = m_B16[2] | m_B16[3] << 8;
             int day = m_B16[6] | m_B16[7] << 8;
             int hour = m_B16[8] | m_B16[9] << 8;
             int min = m_B16[10] | m_B16[11] << 8;
             int sec = m_B16[12] | m_B16[13] << 8;
             int msec = m_B16[14] | m_B16[15] << 8;
-            evt.m_Events[columnid] = new DateTime(year,month,day,hour,min,sec,msec);
+            evt.m_Events[columnid] = new DateTime(year, month, day, hour, min, sec, msec);
             evt.m_ColumnMask |= (ulong)1 << columnid;
 
         }
@@ -1356,9 +1356,9 @@ order by trace_column_id
             return (value[0]) | (value[1] << 8);
         }
 
-// ReSharper disable UnusedMember.Global
+        // ReSharper disable UnusedMember.Global
         public static string BuildEventSql(int traceid, int eventId, params int[] columns)
-// ReSharper restore UnusedMember.Global
+        // ReSharper restore UnusedMember.Global
         {
             StringBuilder sb = new StringBuilder();
             foreach (int i in columns)
@@ -1370,7 +1370,7 @@ order by trace_column_id
 
         public void SetEvent(int eventId, params int[] columns)
         {
-            SqlCommand cmd = new SqlCommand{Connection = m_Conn,CommandText = "sp_trace_setevent",CommandType = CommandType.StoredProcedure};
+            SqlCommand cmd = new SqlCommand { Connection = m_Conn, CommandText = "sp_trace_setevent", CommandType = CommandType.StoredProcedure };
             cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = m_TraceId;
             cmd.Parameters.Add("@eventid", SqlDbType.Int).Value = eventId;
             SqlParameter p = cmd.Parameters.Add("@columnid", SqlDbType.Int);
@@ -1382,9 +1382,9 @@ order by trace_column_id
             }
         }
 
-// ReSharper disable UnusedMember.Global
-        public void SetFilter(int columnId, int logicalOperator,int comparisonOperator,long? value)
-// ReSharper restore UnusedMember.Global
+        // ReSharper disable UnusedMember.Global
+        public void SetFilter(int columnId, int logicalOperator, int comparisonOperator, long? value)
+        // ReSharper restore UnusedMember.Global
         {
             SqlCommand cmd = new SqlCommand { Connection = m_Conn, CommandText = "sp_trace_setfilter", CommandType = CommandType.StoredProcedure };
             cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = m_TraceId;
@@ -1441,7 +1441,7 @@ order by trace_column_id
                         cmd.Parameters.Add("@value", SqlDbType.Int).Value = value;
                         break;
                     default:
-                        throw new Exception(String.Format("Unsupported column_id: {0}",columnId));
+                        throw new Exception(String.Format("Unsupported column_id: {0}", columnId));
                 }
             }
             cmd.ExecuteNonQuery();
@@ -1460,7 +1460,7 @@ order by trace_column_id
             }
             else
             {
-                cmd.Parameters.Add("@value", SqlDbType.NVarChar,value.Length).Value = value;
+                cmd.Parameters.Add("@value", SqlDbType.NVarChar, value.Length).Value = value;
             }
             cmd.ExecuteNonQuery();
         }
@@ -1471,7 +1471,7 @@ order by trace_column_id
             SqlCommand cmd = new SqlCommand { Connection = m_Conn, CommandText = "sp_trace_create", CommandType = CommandType.StoredProcedure };
             cmd.Parameters.Add("@traceid", SqlDbType.Int).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@options", SqlDbType.Int).Value = 1;
-            cmd.Parameters.Add("@trace_file", SqlDbType.NVarChar, 245).Value=DBNull.Value;
+            cmd.Parameters.Add("@trace_file", SqlDbType.NVarChar, 245).Value = DBNull.Value;
             cmd.Parameters.Add("@maxfilesize", SqlDbType.BigInt).Value = DBNull.Value;
             cmd.Parameters.Add("@stoptime", SqlDbType.DateTime).Value = DBNull.Value;
             cmd.Parameters.Add("@filecount", SqlDbType.Int).Value = DBNull.Value;
@@ -1481,9 +1481,9 @@ order by trace_column_id
             m_TraceId = result != 0 ? -result : (int)cmd.Parameters["@traceid"].Value;
         }
 
-        private void ControlTrace(SqlConnection con,int status)
+        private void ControlTrace(SqlConnection con, int status)
         {
-            SqlCommand cmd = new SqlCommand { Connection = con, CommandText = "sp_trace_setstatus", CommandType = CommandType.StoredProcedure,CommandTimeout = 0};
+            SqlCommand cmd = new SqlCommand { Connection = con, CommandText = "sp_trace_setstatus", CommandType = CommandType.StoredProcedure, CommandTimeout = 0 };
             cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = m_TraceId;
             cmd.Parameters.Add("@status", SqlDbType.Int).Value = status;
             cmd.ExecuteNonQuery();
@@ -1491,24 +1491,24 @@ order by trace_column_id
 
         public void CloseTrace(SqlConnection con)
         {
-            ControlTrace(con,2);
+            ControlTrace(con, 2);
         }
 
         public void StopTrace(SqlConnection con)
         {
-            ControlTrace(con,0);
+            ControlTrace(con, 0);
         }
 
         public void StartTrace()
         {
-            ControlTrace(m_Conn,1);
+            ControlTrace(m_Conn, 1);
             GetReader();
             Read();
         }
 
         private void GetReader()
         {
-            SqlCommand cmd = new SqlCommand { Connection = m_Conn, CommandText = "sp_trace_getdata", CommandType = CommandType.StoredProcedure,CommandTimeout = 0};
+            SqlCommand cmd = new SqlCommand { Connection = m_Conn, CommandText = "sp_trace_getdata", CommandType = CommandType.StoredProcedure, CommandTimeout = 0 };
             cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = m_TraceId;
             cmd.Parameters.Add("@records", SqlDbType.Int).Value = 0;
             m_Reader = cmd.ExecuteReader(CommandBehavior.SingleResult);

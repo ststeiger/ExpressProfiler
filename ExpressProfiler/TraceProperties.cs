@@ -30,14 +30,14 @@ namespace ExpressProfiler
 
         public static StringFilterCondition ParseStringCondition(string value)
         {
-            switch(value.ToLower())
+            switch (value.ToLower())
             {
                 case "like":
                 case "eq":
-                case "=":       return StringFilterCondition.Like;
+                case "=": return StringFilterCondition.Like;
                 case "notlike": return StringFilterCondition.NotLike;
             }
-            throw new Exception("Unknown filter condition:"+value);
+            throw new Exception("Unknown filter condition:" + value);
         }
         public static IntFilterCondition ParseIntCondition(string value)
         {
@@ -94,20 +94,20 @@ namespace ExpressProfiler
             {
 
                 EventsColumns = new TraceEventsColumns
-                                    {
-                                        BatchCompleted = true,
-                                        RPCCompleted = true,
-                                        StartTime =  true,
-                                        EndTime = true
-                                    };
+                {
+                    BatchCompleted = true,
+                    RPCCompleted = true,
+                    StartTime = true,
+                    EndTime = true
+                };
                 Filters = new TraceFilters
-                              {
-                                  MaximumEventCount = 5000,
-                                  CpuFilterCondition = IntFilterCondition.GreaterThan,
-                                  ReadsFilterCondition = IntFilterCondition.GreaterThan,
-                                  WritesFilterCondition = IntFilterCondition.GreaterThan,
-                                  DurationFilterCondition = IntFilterCondition.GreaterThan
-                              };
+                {
+                    MaximumEventCount = 5000,
+                    CpuFilterCondition = IntFilterCondition.GreaterThan,
+                    ReadsFilterCondition = IntFilterCondition.GreaterThan,
+                    WritesFilterCondition = IntFilterCondition.GreaterThan,
+                    DurationFilterCondition = IntFilterCondition.GreaterThan
+                };
             }
 
             public string GetAsXmlString()
@@ -115,68 +115,69 @@ namespace ExpressProfiler
                 XmlSerializer x = new XmlSerializer(typeof(TraceSettings));
                 using (StringWriter sw = new StringWriter())
                 {
-                    x.Serialize(sw,this);
+                    x.Serialize(sw, this);
                     return sw.ToString();
                 }
             }
 
             public static TraceSettings GetDefaultSettings()
             {
-                return new TraceSettings{};
+                return new TraceSettings { };
             }
 
             public TraceSettings GetCopy()
             {
                 return new TraceSettings
-                           {
-                               
-                               EventsColumns = new TraceEventsColumns
-                                                   {
-                                                BatchCompleted = EventsColumns.BatchCompleted,
-                                                BatchStarting = EventsColumns.BatchStarting,
-                                                ExistingConnection = EventsColumns.ExistingConnection,
-                                                LoginLogout = EventsColumns.LoginLogout,
-                                                RPCCompleted = EventsColumns.RPCCompleted,
-                                                RPCStarting = EventsColumns.RPCStarting,
-                                                SPStmtCompleted = EventsColumns.SPStmtCompleted,
-                                                SPStmtStarting = EventsColumns.SPStmtStarting,
-                                                UserErrorMessage = EventsColumns.UserErrorMessage,
-                                                ApplicationName = EventsColumns.ApplicationName,
-                                                HostName = EventsColumns.HostName,
-                                                DatabaseName = EventsColumns.DatabaseName,
-                                                EndTime = EventsColumns.EndTime,
-                                                ObjectName = EventsColumns.ObjectName,
-                                                StartTime = EventsColumns.StartTime,
-                                                BlockedProcessPeport =  EventsColumns.BlockedProcessPeport,
-                                                SQLStmtStarting = EventsColumns.SQLStmtStarting,
-                                                SQLStmtCompleted = EventsColumns.SQLStmtCompleted
-                                            }
-                               ,Filters =  new TraceFilters
-                                               {
-                                                  CPU = Filters.CPU,
-                                                  CpuFilterCondition = Filters.CpuFilterCondition,
-                                                  DatabaseName = Filters.DatabaseName,
-                                                  DatabaseNameFilterCondition = Filters.DatabaseNameFilterCondition,
-                                                  Duration = Filters.Duration,
-                                                  DurationFilterCondition = Filters.DurationFilterCondition,
-                                                  LoginName = Filters.LoginName,
-                                                  HostName = Filters.HostName,
-                                                  HostNameFilterCondition = Filters.HostNameFilterCondition,
-                                                  LoginNameFilterCondition = Filters.LoginNameFilterCondition,
-                                                  Reads = Filters.Reads,
-                                                  ReadsFilterCondition = Filters.ReadsFilterCondition,
-                                                  TextData = Filters.TextData,
-                                                  TextDataFilterCondition = Filters.TextDataFilterCondition,
-                                                  Writes = Filters.Writes,
-                                                  WritesFilterCondition = Filters.WritesFilterCondition,
-                                                  MaximumEventCount = Filters.MaximumEventCount,
-                                                  SPID = Filters.SPID,
-                                                  SPIDFilterCondition =  Filters.SPIDFilterCondition,
-                                                  ApplicationName = Filters.ApplicationName,
-                                                  ApplicationNameFilterCondition = Filters.ApplicationNameFilterCondition,
+                {
 
-                                              }
-                           }
+                    EventsColumns = new TraceEventsColumns
+                    {
+                        BatchCompleted = EventsColumns.BatchCompleted,
+                        BatchStarting = EventsColumns.BatchStarting,
+                        ExistingConnection = EventsColumns.ExistingConnection,
+                        LoginLogout = EventsColumns.LoginLogout,
+                        RPCCompleted = EventsColumns.RPCCompleted,
+                        RPCStarting = EventsColumns.RPCStarting,
+                        SPStmtCompleted = EventsColumns.SPStmtCompleted,
+                        SPStmtStarting = EventsColumns.SPStmtStarting,
+                        UserErrorMessage = EventsColumns.UserErrorMessage,
+                        ApplicationName = EventsColumns.ApplicationName,
+                        HostName = EventsColumns.HostName,
+                        DatabaseName = EventsColumns.DatabaseName,
+                        EndTime = EventsColumns.EndTime,
+                        ObjectName = EventsColumns.ObjectName,
+                        StartTime = EventsColumns.StartTime,
+                        BlockedProcessPeport = EventsColumns.BlockedProcessPeport,
+                        SQLStmtStarting = EventsColumns.SQLStmtStarting,
+                        SQLStmtCompleted = EventsColumns.SQLStmtCompleted
+                    }
+                               ,
+                    Filters = new TraceFilters
+                    {
+                        CPU = Filters.CPU,
+                        CpuFilterCondition = Filters.CpuFilterCondition,
+                        DatabaseName = Filters.DatabaseName,
+                        DatabaseNameFilterCondition = Filters.DatabaseNameFilterCondition,
+                        Duration = Filters.Duration,
+                        DurationFilterCondition = Filters.DurationFilterCondition,
+                        LoginName = Filters.LoginName,
+                        HostName = Filters.HostName,
+                        HostNameFilterCondition = Filters.HostNameFilterCondition,
+                        LoginNameFilterCondition = Filters.LoginNameFilterCondition,
+                        Reads = Filters.Reads,
+                        ReadsFilterCondition = Filters.ReadsFilterCondition,
+                        TextData = Filters.TextData,
+                        TextDataFilterCondition = Filters.TextDataFilterCondition,
+                        Writes = Filters.Writes,
+                        WritesFilterCondition = Filters.WritesFilterCondition,
+                        MaximumEventCount = Filters.MaximumEventCount,
+                        SPID = Filters.SPID,
+                        SPIDFilterCondition = Filters.SPIDFilterCondition,
+                        ApplicationName = Filters.ApplicationName,
+                        ApplicationNameFilterCondition = Filters.ApplicationNameFilterCondition,
+
+                    }
+                }
                     ;
             }
 
@@ -282,10 +283,10 @@ namespace ExpressProfiler
             public bool HostName { get; set; }
 
         }
-        
-        
 
-                [Serializable]
+
+
+        [Serializable]
         public class TraceFilters
         {
 
@@ -349,7 +350,7 @@ namespace ExpressProfiler
 
             [Category(@"Maximum events count")]
             [DisplayName(@"Maximum events count")]
-//            [DefaultValue(5000)]
+            //            [DefaultValue(5000)]
             public int MaximumEventCount { get; set; }
 
             [Category(@"SPID")]
@@ -394,13 +395,13 @@ namespace ExpressProfiler
 
         internal static bool AtLeastOneEventSelected(TraceSettings ts)
         {
-            return ts.EventsColumns.BatchCompleted 
-                    || ts.EventsColumns.BatchStarting 
-                    || ts.EventsColumns.LoginLogout 
+            return ts.EventsColumns.BatchCompleted
+                    || ts.EventsColumns.BatchStarting
+                    || ts.EventsColumns.LoginLogout
                     || ts.EventsColumns.ExistingConnection
-                    || ts.EventsColumns.RPCCompleted 
-                    || ts.EventsColumns.RPCStarting 
-                    || ts.EventsColumns.SPStmtCompleted 
+                    || ts.EventsColumns.RPCCompleted
+                    || ts.EventsColumns.RPCStarting
+                    || ts.EventsColumns.SPStmtCompleted
                     || ts.EventsColumns.SPStmtStarting
                     || ts.EventsColumns.UserErrorMessage
                     || ts.EventsColumns.BlockedProcessPeport
@@ -413,91 +414,91 @@ namespace ExpressProfiler
         {
             if (!AtLeastOneEventSelected(m_currentsettings))
             {
-                MessageBox.Show("You should select at least 1 event","Starting trace",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("You should select at least 1 event", "Starting trace", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 tabControl1.SelectedTab = tabPage2;
                 return;
             }
             DialogResult = DialogResult.OK;
         }
 
-	    public bool IsIncluded(ListViewItem lvi)
-	    {
-			bool included = true;
+        public bool IsIncluded(ListViewItem lvi)
+        {
+            bool included = true;
 
-			//Fragile here to hard coding the columns, but they are currently this way.
-			included &= IsIncluded(m_currentsettings.Filters.ApplicationNameFilterCondition, m_currentsettings.Filters.ApplicationName, lvi.SubItems[0].Text);
-			included &= IsIncluded(m_currentsettings.Filters.TextDataFilterCondition, m_currentsettings.Filters.TextData, lvi.SubItems[1].Text);
-			included &= IsIncluded(m_currentsettings.Filters.LoginNameFilterCondition, m_currentsettings.Filters.LoginName, lvi.SubItems[2].Text);
-			included &= IsIncluded(m_currentsettings.Filters.CpuFilterCondition, m_currentsettings.Filters.CPU, lvi.SubItems[3].Text);
-			included &= IsIncluded(m_currentsettings.Filters.ReadsFilterCondition, m_currentsettings.Filters.Reads, lvi.SubItems[4].Text);
-			included &= IsIncluded(m_currentsettings.Filters.WritesFilterCondition, m_currentsettings.Filters.Writes, lvi.SubItems[5].Text);
-			included &= IsIncluded(m_currentsettings.Filters.DurationFilterCondition, m_currentsettings.Filters.Duration, lvi.SubItems[6].Text);
-			included &= IsIncluded(m_currentsettings.Filters.SPIDFilterCondition, m_currentsettings.Filters.SPID, lvi.SubItems[7].Text);
+            //Fragile here to hard coding the columns, but they are currently this way.
+            included &= IsIncluded(m_currentsettings.Filters.ApplicationNameFilterCondition, m_currentsettings.Filters.ApplicationName, lvi.SubItems[0].Text);
+            included &= IsIncluded(m_currentsettings.Filters.TextDataFilterCondition, m_currentsettings.Filters.TextData, lvi.SubItems[1].Text);
+            included &= IsIncluded(m_currentsettings.Filters.LoginNameFilterCondition, m_currentsettings.Filters.LoginName, lvi.SubItems[2].Text);
+            included &= IsIncluded(m_currentsettings.Filters.CpuFilterCondition, m_currentsettings.Filters.CPU, lvi.SubItems[3].Text);
+            included &= IsIncluded(m_currentsettings.Filters.ReadsFilterCondition, m_currentsettings.Filters.Reads, lvi.SubItems[4].Text);
+            included &= IsIncluded(m_currentsettings.Filters.WritesFilterCondition, m_currentsettings.Filters.Writes, lvi.SubItems[5].Text);
+            included &= IsIncluded(m_currentsettings.Filters.DurationFilterCondition, m_currentsettings.Filters.Duration, lvi.SubItems[6].Text);
+            included &= IsIncluded(m_currentsettings.Filters.SPIDFilterCondition, m_currentsettings.Filters.SPID, lvi.SubItems[7].Text);
 
-			return included;
-	    }
+            return included;
+        }
 
-		private bool IsIncluded(StringFilterCondition filterCondition, string filter, string entryToCheck)
-		{
-			bool included = true; //Until removed.  Negative logic is applied here.
-			if (String.IsNullOrEmpty(filter)==false)
-			{
-				if (filterCondition == StringFilterCondition.Like)
-				{
-					if (entryToCheck.Contains(filter) == false)
-					{
-						included = false;
-					}
-				}
-				else if (filterCondition == StringFilterCondition.NotLike)
-				{
-					if (entryToCheck.Contains(filter) == true)
-					{
-						included = false;
-					}
-				}
-			}
-			return included;
-		}
+        private bool IsIncluded(StringFilterCondition filterCondition, string filter, string entryToCheck)
+        {
+            bool included = true; //Until removed.  Negative logic is applied here.
+            if (String.IsNullOrEmpty(filter) == false)
+            {
+                if (filterCondition == StringFilterCondition.Like)
+                {
+                    if (entryToCheck.Contains(filter) == false)
+                    {
+                        included = false;
+                    }
+                }
+                else if (filterCondition == StringFilterCondition.NotLike)
+                {
+                    if (entryToCheck.Contains(filter) == true)
+                    {
+                        included = false;
+                    }
+                }
+            }
+            return included;
+        }
 
 
-		private bool IsIncluded(IntFilterCondition filterCondition, int? filter, string entryToCheck)
-	    {
-			bool included = true; //Until removed.  Negative logic is applied here.
+        private bool IsIncluded(IntFilterCondition filterCondition, int? filter, string entryToCheck)
+        {
+            bool included = true; //Until removed.  Negative logic is applied here.
 
-			int intEntry;
-			if ((Int32.TryParse(entryToCheck, out intEntry))&&(filter.HasValue))
-			{
-				if (filterCondition == IntFilterCondition.Equal)
-				{
-					if (filter != intEntry)
-					{
-						included = false;
-					}
-				}
-				else if (filterCondition == IntFilterCondition.GreaterThan)
-				{
-					if (filter >= intEntry) // <= because we are using negative logic here.
-					{
-						included = false;
-					}
-				}
-				else if (filterCondition == IntFilterCondition.LessThan)
-				{
-					if (filter <= intEntry) // >= because we are using negative logic here.
-					{
-						included = false;
-					}
-				}
-				else if (filterCondition == IntFilterCondition.NotEqual)
-				{
-					if (filter == intEntry)
-					{
-						included = false;
-					}
-				}
-			}
-			return included;
-	    }
+            int intEntry;
+            if ((Int32.TryParse(entryToCheck, out intEntry)) && (filter.HasValue))
+            {
+                if (filterCondition == IntFilterCondition.Equal)
+                {
+                    if (filter != intEntry)
+                    {
+                        included = false;
+                    }
+                }
+                else if (filterCondition == IntFilterCondition.GreaterThan)
+                {
+                    if (filter >= intEntry) // <= because we are using negative logic here.
+                    {
+                        included = false;
+                    }
+                }
+                else if (filterCondition == IntFilterCondition.LessThan)
+                {
+                    if (filter <= intEntry) // >= because we are using negative logic here.
+                    {
+                        included = false;
+                    }
+                }
+                else if (filterCondition == IntFilterCondition.NotEqual)
+                {
+                    if (filter == intEntry)
+                    {
+                        included = false;
+                    }
+                }
+            }
+            return included;
+        }
     }
 }

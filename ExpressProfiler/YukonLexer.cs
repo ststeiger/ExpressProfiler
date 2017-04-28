@@ -57,27 +57,28 @@ namespace ExpressProfiler
             return result.ToString();
         }
         public YukonLexer() { Array.Sort(m_IdentifiersArray); }
-        public void FillRichEdit(System. Windows.Forms.RichTextBox rich, string value)
+        public void FillRichEdit(System.Windows.Forms.RichTextBox rich, string value)
         {
 
             rich.Text = "";
             Line = value;
 
 
-            System.Collections.Generic.List<TokenKind> lsTokenTypeHistory = 
+            System.Collections.Generic.List<TokenKind> lsTokenTypeHistory =
                 new System.Collections.Generic.List<TokenKind>();
 
 
             RTFBuilder sb = new RTFBuilder { BackColor = rich.BackColor };
             while (TokenId != TokenKind.tkNull)
             {
-                if(TokenId != TokenKind.tkSpace)
+                if (TokenId != TokenKind.tkSpace)
                     lsTokenTypeHistory.Add(TokenId);
 
                 Color forecolor;
                 switch (TokenId)
                 {
-                    case TokenKind.tkKey: forecolor = Color.Blue;
+                    case TokenKind.tkKey:
+                        forecolor = Color.Blue;
                         break;
                     case TokenKind.tkFunction: forecolor = Color.Fuchsia; break;
                     case TokenKind.tkGreyKeyword: forecolor = Color.Gray; break;
@@ -86,7 +87,8 @@ namespace ExpressProfiler
                         forecolor = Color.Blue; break;
                     case TokenKind.tkNumber: forecolor = Color.Red; break;
                     case TokenKind.tkString: forecolor = Color.Red; break;
-                    case TokenKind.tkComment: forecolor = Color.DarkGreen;
+                    case TokenKind.tkComment:
+                        forecolor = Color.DarkGreen;
                         break;
                     default: forecolor = Color.Black; break;
                 }
@@ -99,7 +101,7 @@ namespace ExpressProfiler
                 {
                     int cntHistory = lsTokenTypeHistory.Count;
 
-                    if (TokenKind.tkString == TokenId 
+                    if (TokenKind.tkString == TokenId
                         && cntHistory > 3
                         && lsTokenTypeHistory[cntHistory - 2] == TokenKind.tkSymbol
                         && lsTokenTypeHistory[cntHistory - 3] == TokenKind.tkVariable
@@ -135,7 +137,7 @@ namespace ExpressProfiler
         private void NullProc() { m_TokenId = TokenKind.tkNull; }
         // ReSharper disable InconsistentNaming
         private void LFProc() { m_TokenId = TokenKind.tkSpace; m_Run++; }
-        private void CRProc() { m_TokenId = TokenKind.tkSpace; m_Run++; if (GetChar(m_Run) == '\x0A')m_Run++; }
+        private void CRProc() { m_TokenId = TokenKind.tkSpace; m_Run++; if (GetChar(m_Run) == '\x0A') m_Run++; }
         // ReSharper restore InconsistentNaming
 
         private void AnsiCProc()
@@ -255,7 +257,7 @@ namespace ExpressProfiler
         private void NumberProc()
         {
             m_TokenId = TokenKind.tkNumber;
-            if (GetChar(m_Run) == '0' && (GetChar(m_Run+1) == 'X' || GetChar(m_Run+1) == 'x'))
+            if (GetChar(m_Run) == '0' && (GetChar(m_Run + 1) == 'X' || GetChar(m_Run + 1) == 'x'))
             {
                 m_Run += 2;
                 while (HexDigits.IndexOf(GetChar(m_Run)) != -1) m_Run++;

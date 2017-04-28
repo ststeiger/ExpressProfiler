@@ -5,7 +5,7 @@ namespace ExpressProfiler
     class ListViewNF : ListView
     {
 
-		public SortOrder SortOrder { get; set; }
+        public SortOrder SortOrder { get; set; }
 
         public ListViewNF()
         {
@@ -16,18 +16,18 @@ namespace ExpressProfiler
             // Windows messages before they get to the form's WndProc
             this.SetStyle(ControlStyles.EnableNotifyMessage, true);
 
-			SortOrder = SortOrder.Ascending;
+            SortOrder = SortOrder.Ascending;
         }
 
-	    public void ToggleSortOrder()
-	    {
-		    if (SortOrder == SortOrder.Ascending)
-		    {
-			    SortOrder = SortOrder.Descending;
-				return;
-		    }
-			SortOrder = SortOrder.Ascending;
-	    }
+        public void ToggleSortOrder()
+        {
+            if (SortOrder == SortOrder.Ascending)
+            {
+                SortOrder = SortOrder.Descending;
+                return;
+            }
+            SortOrder = SortOrder.Ascending;
+        }
 
         protected override void OnNotifyMessage(Message m)
         {
