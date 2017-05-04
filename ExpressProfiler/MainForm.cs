@@ -1704,5 +1704,35 @@ namespace ExpressProfiler
             }
         }
 
+        private void edUser_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                if (sender != null)
+                    ((ToolStripTextBox)sender).SelectAll();
+            }
+        }
+
+
+        private void edPassword_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                if (sender != null)
+                    ((ToolStripTextBox)sender).SelectAll();
+            }
+        }
+
+
+        private void edServer_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.A)
+            {
+                if (sender != null)
+                    ((ToolStripTextBox)sender).SelectAll();
+            }
+        }
+
     }
 }
