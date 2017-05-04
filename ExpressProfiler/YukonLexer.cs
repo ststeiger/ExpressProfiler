@@ -101,6 +101,8 @@ namespace ExpressProfiler
                 {
                     int cntHistory = lsTokenTypeHistory.Count;
 
+                    // If the token has a datetime parameter-value that is passed as string, 
+                    // ensure yyyy-MM-dd' 'HH:mm:ss[.fff] is replaced with yyyy-MM-dd'T'HH:mm:ss[.fff]
                     if (TokenKind.tkString == TokenId
                         && cntHistory > 3
                         && lsTokenTypeHistory[cntHistory - 2] == TokenKind.tkSymbol

@@ -252,6 +252,7 @@ namespace ExpressProfiler
                 {
                     // m_servername = @".\sqlexpress";
                     m_servername = System.Net.Dns.GetHostName();
+                    m_servername = "CORDB2008R2";
                 }
             }
             catch (Exception e)

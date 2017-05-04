@@ -70,6 +70,26 @@ namespace ExpressProfiler
                         m_Sb.Append("\\line ");
                     }
                 }
+                // Don't fail on non-Windows Environment.NewLine 
+                else if (value.IndexOf("\n") >= 0)
+                {
+                    string[] lines = value.Split(new[] { "\n" }, StringSplitOptions.None);
+                    foreach (string line in lines)
+                    {
+                        m_Sb.Append(line);
+                        m_Sb.Append("\\line ");
+                    }
+                }
+                // A sole carriage return should also be treated as Environment.NewLine
+                else if (value.IndexOf("\r") >= 0)
+                {
+                    string[] lines = value.Split(new[] { "\n" }, StringSplitOptions.None);
+                    foreach (string line in lines)
+                    {
+                        m_Sb.Append(line);
+                        m_Sb.Append("\\line ");
+                    }
+                }
                 else
                 {
                     m_Sb.Append(value);
