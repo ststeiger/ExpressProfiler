@@ -60,28 +60,12 @@ namespace ExpressProfiler
         {
             if (!string.IsNullOrEmpty(value))
             {
-                value = CheckChar(value);
-                if (value.IndexOf(Environment.NewLine) >= 0)
-                {
-                    string[] lines = value.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                    foreach (string line in lines)
-                    {
-                        m_Sb.Append(line);
-                        m_Sb.Append("\\line ");
-                    }
-                }
-                // Don't fail on non-Windows Environment.NewLine 
-                else if (value.IndexOf("\n") >= 0)
-                {
-                    string[] lines = value.Split(new[] { "\n" }, StringSplitOptions.None);
-                    foreach (string line in lines)
-                    {
-                        m_Sb.Append(line);
-                        m_Sb.Append("\\line ");
-                    }
-                }
+                value = value.Replace("\r\n", "\n");
+                value = value.Replace("\r", "\n");
                 // A sole carriage return should also be treated as Environment.NewLine
-                else if (value.IndexOf("\r") >= 0)
+
+                value = CheckChar(value);
+                if (value.IndexOf("\n") >= 0)
                 {
                     string[] lines = value.Split(new[] { "\n" }, StringSplitOptions.None);
                     foreach (string line in lines)
