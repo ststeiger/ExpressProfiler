@@ -53,7 +53,7 @@ namespace ExpressProfiler
 
         public void AppendLine()
         {
-            m_Sb.AppendLine("\\line");
+            m_Sb.AppendLine("\\line ");
         }
 
         public void Append(string value)
@@ -61,24 +61,25 @@ namespace ExpressProfiler
             if (!string.IsNullOrEmpty(value))
             {
                 value = value.Replace("\r\n", "\n");
-                value = value.Replace("\r", "\n");
-                // A sole carriage return should also be treated as Environment.NewLine
 
+                // A sole carriage return should not be treated as Environment.NewLine
+                value = value.Replace("\r", "");
                 value = CheckChar(value);
-                if (value.IndexOf("\n") >= 0)
-                {
-                    string[] lines = value.Split(new[] { "\n" }, StringSplitOptions.None);
-                    foreach (string line in lines)
-                    {
-                        m_Sb.Append(line);
-                        m_Sb.Append("\\line ");
-                    }
-                }
-                else
-                {
-                    m_Sb.Append(value);
-                }
 
+                int newlineIndex = -1;
+                while ((newlineIndex = value.IndexOf('\n')) != -1)
+                {
+                    string valueToAdd = value.Substring(0, newlineIndex);
+                    if (!string.IsNullOrEmpty(valueToAdd))
+                        m_Sb.Append(valueToAdd);
+                    
+                    m_Sb.Append("\\line ");
+
+                    value = value.Substring(newlineIndex + 1);
+                } // Whend 
+
+                if (!string.IsNullOrEmpty(value))
+                    m_Sb.Append(value);
             }
         }
         private static readonly char[] Slashable = new[] { '{', '}', '\\' };

@@ -93,11 +93,12 @@ namespace ExpressProfiler
                     default: forecolor = Color.Black; break;
                 }
                 sb.ForeColor = forecolor;
-                if (Token == Environment.NewLine || Token == "\r" || Token == "\n")
+
+                if (Token == Environment.NewLine || Token == "\n")
                 {
                     sb.AppendLine();
                 }
-                else
+                else if(Token != "\r")
                 {
                     int cntHistory = lsTokenTypeHistory.Count;
 
