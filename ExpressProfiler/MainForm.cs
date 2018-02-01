@@ -78,6 +78,13 @@ namespace ExpressProfiler
             Text = versionString;
             edPassword.TextBox.PasswordChar = '*';
             m_servername = Properties.Settings.Default.ServerName;
+
+            if ("COR".Equals(System.Environment.UserDomainName, StringComparison.OrdinalIgnoreCase))
+            {
+                if(m_servername.StartsWith(System.Environment.MachineName, StringComparison.OrdinalIgnoreCase))
+                    m_servername = System.Environment.MachineName + @"\" + "SQLEXPRESS";
+            }
+
             m_username = Properties.Settings.Default.UserName;
             m_currentsettings = GetDefaultSettings();
             ParseCommandLine();
@@ -1686,10 +1693,12 @@ namespace ExpressProfiler
             SetFilterEvents();
         }
 
+
         private void clearCapturedFiltersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ClearFilterEvents();
         }
+
 
         private void tbFilterEvents_Click(object sender, EventArgs e)
         {
@@ -1703,6 +1712,7 @@ namespace ExpressProfiler
                 ClearFilterEvents();
             }
         }
+
 
         private void edUser_KeyUp(object sender, KeyEventArgs e)
         {
@@ -1734,5 +1744,8 @@ namespace ExpressProfiler
             }
         }
 
+
     }
+
+
 }
