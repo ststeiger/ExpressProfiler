@@ -79,11 +79,30 @@ namespace ExpressProfiler
             edPassword.TextBox.PasswordChar = '*';
             m_servername = Properties.Settings.Default.ServerName;
 
-            if ("COR".Equals(System.Environment.UserDomainName, StringComparison.OrdinalIgnoreCase))
+            // Microsoft.Win32.RegistryKey.OpenRemoteBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, "");
+            // var localMachine = Microsoft.Win32.RegistryKey.OpenBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, Microsoft.Win32.RegistryView.Registry64);
+            //var rk = localMachine.OpenSubKey("SOFTWARE\\Microsoft\\Microsoft SQL Server");
+            Microsoft.Win32.RegistryKey rk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Microsoft SQL Server");
+            if (rk != null)
             {
-                if(m_servername.StartsWith(System.Environment.MachineName, StringComparison.OrdinalIgnoreCase))
-                    m_servername = System.Environment.MachineName + @"\" + "SQLEXPRESS";
+                string[] instances = (string[])rk.GetValue("InstalledInstances1");
+
+                if (instances != null && instances.Length > 0)
+                {
+                    if ("MSSQLSERVER".Equals(instances[0], System.StringComparison.InvariantCultureIgnoreCase))
+                        this.m_servername = System.Environment.MachineName;
+                    else
+                        this.m_servername = System.Environment.MachineName + @"\" + instances[0];
+                }
+                else
+                    this.m_servername = System.Environment.MachineName;
             }
+            else if ("COR".Equals(System.Environment.UserDomainName, StringComparison.OrdinalIgnoreCase))
+            {
+                this.m_servername = System.Environment.MachineName + @"\" + "SQLEXPRESS";
+            }
+            else
+                this.m_servername = System.Environment.MachineName;
 
             m_username = Properties.Settings.Default.UserName;
             m_currentsettings = GetDefaultSettings();
